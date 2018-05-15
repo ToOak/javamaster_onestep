@@ -12,6 +12,10 @@ public class traverse {
     public static void main(String[] args) {
         File file = new File("E:\\BaiduYunDownload\\java视频\\java视频");
         String[] files = file.list();
+        if(files == null) {
+        	System.out.println("not found directory!");
+        	return;
+        }
         List<String> fileNameList = new ArrayList<>(Arrays.asList(files));
         Set<String> fileNams = new TreeSet<>((o1, o2) -> {
             String head1 = o1.substring(0, o1.indexOf("."));
