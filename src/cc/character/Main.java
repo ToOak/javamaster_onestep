@@ -1,4 +1,4 @@
-package character;
+package cc.character;
 
 import java.io.File;
 import java.io.FileNotFoundException;

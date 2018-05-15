@@ -1,4 +1,4 @@
-package synchronization.bean;
+package cc.synchronization.bean;
 
 public class P {
     private String name;

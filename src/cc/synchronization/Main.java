@@ -1,8 +1,8 @@
-package synchronization;
+package cc.synchronization;
 
-import synchronization.bean.P;
-import synchronization.thread.Consumer;
-import synchronization.thread.Producter;
+import cc.synchronization.bean.P;
+import cc.synchronization.thread.Consumer;
+import cc.synchronization.thread.Producter;
 
 /**
  * 线程间的通信 同步问题

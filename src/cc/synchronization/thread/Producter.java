@@ -1,6 +1,6 @@
-package synchronization.thread;
+package cc.synchronization.thread;
 
-import synchronization.bean.P;
+import cc.synchronization.bean.P;
 
 /**
  * 生产者

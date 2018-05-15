@@ -1,7 +1,7 @@
-package deadlock.thread;
+package cc.deadlock.thread;
 
-import deadlock.bean.A;
-import deadlock.bean.B;
+import cc.deadlock.bean.A;
+import cc.deadlock.bean.B;
 
 public class TestThread implements Runnable {
 

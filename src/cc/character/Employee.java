@@ -1,4 +1,4 @@
-package character;
+package cc.character;
 
 public class Employee {
     String name;

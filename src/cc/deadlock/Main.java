@@ -1,8 +1,8 @@
-package deadlock;
+package cc.deadlock;
 
-import deadlock.bean.A;
-import deadlock.bean.B;
-import deadlock.thread.TestThread;
+import cc.deadlock.bean.A;
+import cc.deadlock.bean.B;
+import cc.deadlock.thread.TestThread;
 
 /**
  * 死锁

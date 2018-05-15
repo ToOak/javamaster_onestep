@@ -1,4 +1,4 @@
-package deadlock.bean;
+package cc.deadlock.bean;
 
 public class B {
     public synchronized void method(A a) {

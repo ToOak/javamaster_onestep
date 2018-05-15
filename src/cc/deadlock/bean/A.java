@@ -1,4 +1,4 @@
-package deadlock.bean;
+package cc.deadlock.bean;
 
 public class A {
 
