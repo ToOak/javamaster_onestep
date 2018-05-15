@@ -1,3 +1,6 @@
 .idea/
 javamaster_onestep.iml
 out/
+/bin/
+.classpath
+.project
