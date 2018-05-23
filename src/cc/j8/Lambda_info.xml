@@ -57,6 +57,7 @@
         </result>
         另外，只是访问它而不作修改是可以的，如下所示：
         <code>
+            //&lt;(实体引用)
             List&lt;Integer&gt;primes = Arrays.asList(new Integer[]{2, 3,5,7});
             int factor = 2;
             primes.forEach(element -> { System.out.println(factor*element); });

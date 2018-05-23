@@ -168,4 +168,6 @@ public class Main {
         bytes[1] = (byte) (c & 0xff);
         return bytes;
     }
+
+//    高效的算出 2*8 = 2<<3;
 }
