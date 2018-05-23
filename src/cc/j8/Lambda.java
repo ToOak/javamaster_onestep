@@ -69,10 +69,18 @@ public class Lambda {
 //        IntStream.iterate(0, i -> (i + 1) % 2).distinct().limit(10).forEach(System.out::println);
 //        IntStream.iterate(0, i -> (i + 1) % 2).distinct().forEach(System.out::println);
 
-
-        List features = Arrays.asList("Lambdas", "Default Method", "Stream API", "Date and Time API");
-        //  Consumer
-        features.forEach(System.out::println);
+        {
+            // 使用lambda表达式对列表进行迭代
+            // 列表循环的最后一个例子展示了如何在Java 8中使用方法引用（method reference）。
+            // 你可以看到C++里面的双冒号、范围解析操作符现在在Java 8中用来表示方法引用。
+            List features = Arrays.asList("Lambdas", "Default Method", "Stream API", "Date and Time API");
+            features.forEach(n -> System.out.print(n + "\t"));
+            System.out.println();
+            //  Consumer
+            // 使用Java 8的方法引用更方便，方法引用由::双冒号操作符标示，
+            // 看起来像C++的作用域解析运算符
+            features.forEach(System.out::println);
+        }
 
     }
 
