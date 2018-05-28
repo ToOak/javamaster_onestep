@@ -19,7 +19,15 @@ public class Base {
             };
 //        test.test();
         }
+        synchronized (Base.class) {
+            //匿名
+            new Thread(() -> System.out.println("runnable run")) {
+                public void run() {
+                    System.out.println("subthread run");
+                }
+            }.start();
 
+        }
         {
             // 异常的捕获
             // 这种情况，如果出现异常，并不处理，但是资源一定关闭，
