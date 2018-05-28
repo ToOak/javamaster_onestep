@@ -160,6 +160,13 @@
         这个对象就是Condition，将Object中的三个方法进行单独的封装。
         并提供了功能一致的方法 await()、signal()、signalAll()体现新版本对象的好处。
 
+34、StringBuffer 和 StringBuilder 的区别：
+    StringBuffer线程安全。
+    StringBuilder线程不安全。
+    单线程操作，使用StringBuilder 效率高。
+    多线程操作，使用StringBuffer 安全。
+
+
 
 
 
