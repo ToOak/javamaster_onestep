@@ -20,7 +20,7 @@ public class Base {
 //        test.test();
         }
         synchronized (Base.class) {
-            //匿名
+            //匿名 重写了 Thread 的 run() 方法
             new Thread(() -> System.out.println("runnable run")) {
                 public void run() {
                     System.out.println("subthread run");
