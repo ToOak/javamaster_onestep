@@ -657,4 +657,67 @@
     2、实例化对象，获得类的属性、方法或构造函数。
     3、访问属性、调用方法、调用构造函数创建对象。
 
+94、获取这个Class对象，有三种方式：
+    1：通过每个对象都具备的方法getClass来获取。弊端：必须要创建该类对象，才可以调用getClass方法。
+    2：每一个数据类型(基本数据类型和引用数据类型)都有一个静态的属性class。弊端：必须要先明确该类。
+    	 前两种方式不利于程序的扩展，因为都需要在程序使用具体的类来完成。
+    3：使用的Class类中的方法，静态的forName方法。
+    	 指定什么类名，就获取什么类字节码文件对象，这种方式的扩展性最强，只要将类名的字符串传入即可。
+    // 1. 根据给定的类名来获得  用于类加载
+    String classname = "cn.itcast.reflect.Person";// 来自配置文件
+    Class clazz = Class.forName(classname);// 此对象代表Person.class
+    // 2. 如果拿到了对象，不知道是什么类型   用于获得对象的类型
+    Object obj = new Person();
+    Class clazz1 = obj.getClass();// 获得对象具体的类型
+    // 3. 如果是明确地获得某个类的Class对象  主要用于传参
+    Class clazz2 = Person.class;
+
+95、反射的用法：
+    1）、需要获得java类的各个组成部分，首先需要获得类的Class对象，获得Class对象的三种方式：
+    	Class.forName(classname)	用于做类加载
+    	obj.getClass()				用于获得对象的类型
+    	类名.class			    用于获得指定的类型，传参用
+    2)、反射类的成员方法：
+    	Class clazz = Person.class;
+    	Method method = clazz.getMethod(methodName, new Class[]{paramClazz1, paramClazz2});
+    	method.invoke();
+    3)、反射类的构造函数：
+    	Constructor con = clazz.getConstructor(new Class[]{paramClazz1, paramClazz2,...})
+    	con.newInstance(params...)
+    4)、反射类的属性：
+    	Field field = clazz.getField(fieldName);
+    	field.setAccessible(true);
+    	field.setObject(value);
+
+96、获取了字节码文件对象后，最终都需要创建指定类的对象：
+    创建对象的两种方式(其实就是对象在进行实例化时的初始化方式)：
+    1，调用空参数的构造函数：使用了Class类中的newInstance()方法。
+    2，调用带参数的构造函数：先要获取指定参数列表的构造函数对象，然后通过该构造函数的对象的newInstance(实际参数) 进行对象的初始化。
+    综上所述，第二种方式，必须要先明确具体的构造函数的参数类型，不便于扩展。
+        所以一般情况下，被反射的类，内部通常都会提供一个公有的空参数的构造函数。
+
+97、getDeclaredMethod（私有方法） setAccessible getConstructors getDeclaredConstructors getMethods getDeclaredMethods
+
+98、正则表达式：其实是用来操作字符串的一些规则。
+    好处：正则的出现，对字符串的复杂操作变得更为简单。
+    特点：将对字符串操作的代码用一些符号来表示。只要使用了指定符号，就可以调用底层的代码对字符串进行操作。符号的出现，简化了代码的书写。
+    弊端：符号的出现虽然简化了书写，但是却降低了阅读性。
+    其实更多是用正则解决字符串操作的问题。
+
+99、常见操作：
+    1，匹配：其实用的就是String类中的matches方法。
+    String reg = "[1-9][0-9]{4,14}";
+    	boolean b = qq.matches(reg);//将正则和字符串关联对字符串进行匹配。
+    2，切割：其实用的就是String类中的split方法。
+    3，替换：其实用的就是String类中的replaceAll();
+    4，获取：
+        1），先要将正则表达式编译成正则对象。使用的是Pattern中静态方法 compile(regex);
+    	2），通过Pattern对象获取Matcher对象。
+    		Pattern用于描述正则表达式，可以对正则表达式进行解析。
+    		而将规则操作字符串，需要从新封装到匹配器对象Matcher中。
+    		然后使用Matcher对象的方法来操作字符串。
+    		如何获取匹配器对象呢？
+    		通过Pattern对象中的matcher方法。该方法可以正则规则和字符串想关联。并返回匹配器对象。
+    	3），使用Matcher对象中的方法即可对字符串进行各种正则操作。
+
 
