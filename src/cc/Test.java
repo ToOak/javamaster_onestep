@@ -1,5 +1,7 @@
 package cc;
 
+import java.io.IOException;
+
 import static java.lang.System.out;
 
 class Test {
@@ -31,6 +33,58 @@ class Test {
                 Integer j = 128;
                 out.println("128: " + (i == j));
             }
+        }
+        {
+            Runtime r = Runtime.getRuntime();
+            Process p = null;    //运行指定的程序
+            try {
+                p = r.exec("notepad.exe .\\src\\cc\\Test.java");
+                Thread.sleep(3000);
+            } catch (InterruptedException | IOException e) {
+                e.printStackTrace();
+            }
+            p.destroy();  //杀掉进程
+
+        }
+        {
+            // Original
+            out.print("\nori:");
+            out.print("\t" + 1.3);
+            out.print("\t" + -1.3);
+            out.print("\t" + 1.6);
+            out.print("\t" + -1.6);
+            out.print("\t" + 1.5);
+            out.print("\t" + -1.5);
+
+            out.println();
+
+            out.print("\nceil:");
+            out.print("\t" + (int) Math.ceil(1.3));
+            out.print("\t" + (int) Math.ceil(-1.3));
+            out.print("\t" + (int) Math.ceil(1.6));
+            out.print("\t" + (int) Math.ceil(-1.6));
+            out.print("\t" + (int) Math.ceil(1.5));
+            out.print("\t" + (int) Math.ceil(-1.5));
+
+            out.print("\nfloor:");
+            out.print("\t" + (int) Math.floor(1.3));
+            out.print("\t" + (int) Math.floor(-1.3));
+            out.print("\t" + (int) Math.floor(1.6));
+            out.print("\t" + (int) Math.floor(-1.6));
+            out.print("\t" + (int) Math.floor(1.5));
+            out.print("\t" + (int) Math.floor(-1.5));
+
+            // 返回值: 与 x 最接近的整数。
+            // 说明：  对于 0.5，该方法将进行上舍入。
+            // 例如：  3.5 将舍入为 4，而 - 3.5 将舍入为 - 3。
+            out.print("\nround:");
+            out.print("\t" + Math.round(1.3));
+            out.print("\t" + Math.round(-1.3));
+            out.print("\t" + Math.round(1.6));
+            out.print("\t" + Math.round(-1.6));
+            out.print("\t" + Math.round(1.5));
+            out.print("\t" + Math.round(-1.5));
+
         }
 
     }

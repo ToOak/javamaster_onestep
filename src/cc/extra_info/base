@@ -198,6 +198,190 @@
         既然是在迭代中对元素进行操作,找迭代器的方法最为合适.可是Iterator中只有hasNext,next,remove方法.
         通过查阅的它的子接口,ListIterator,发现该列表迭代器接口具备了对元素的增、删、改、查的动作。
 
+42、可变长度数组的原理：
+    当元素超出数组长度，会产生一个新数组，将原数组的数据复制到新数组中，再将新的元素添加到新数组中。
+        ArrayList：是按照原数组的50%延长。构造一个初始容量为 10 的空列表。
+        Vector：是按照原数组的100%延长。
+    注意：对于list集合，底层判断元素是否相同，其实用的是元素自身的equals方法完成的。
+        所以建议元素都要复写equals方法，建立元素对象自己的比较相同的条件依据。
+
+43、Set接口中的方法和Collection中方法一致的。Set接口取出方式只有一种，迭代器。
+    |--HashSet：底层数据结构是哈希表，线程是不同步的。无序，高效；
+   		HashSet集合保证元素唯一性：通过元素的hashCode方法，和equals方法完成的。
+   		当元素的hashCode值相同时，才继续判断元素的equals是否为true。
+   		如果为true，那么视为相同元素，不存。如果为false，那么存储。
+   		如果hashCode值不同，那么不判断equals，从而提高对象比较的速度。
+            |--LinkedHashSet：有序，hashset的子类。
+   	|--TreeSet：对Set集合中的元素的进行指定顺序的排序。不同步。TreeSet底层的数据结构就是二叉树。
+
+44、哈希表的原理：
+    1，对对象元素中的关键字(对象中的特有数据)，进行哈希算法的运算，并得出一个具体的算法值，这个值 称为哈希值。
+    2，哈希值就是这个元素的位置。
+    3，如果哈希值出现冲突，再次判断这个关键字对应的对象是否相同。如果对象相同，就不存储，因为元素重复。
+        如果对象不同，就存储，在原来对象的哈希值基础 +1顺延。
+    4，存储哈希值的结构，我们称为哈希表。
+    5，既然哈希表是根据哈希值存储的，为了提高效率，最好保证对象的关键字是唯一的。
+   	    这样可以尽量少的判断关键字对应的对象是否相同，提高了哈希表的操作效率。
+
+45、对于ArrayList集合，判断元素是否存在，或者删元素底层依据都是equals方法。
+    对于HashSet集合，判断元素是否存在，或者删除元素，底层依据的是hashCode方法和equals方法。
+
+46、TreeSet:
+    用于对Set集合进行元素的指定顺序排序，排序需要依据元素自身具备的比较性。
+   	如果元素不具备比较性，在运行时会发生ClassCastException异常。
+   	所以需要元素实现Comparable接口，强制让元素具备比较性，复写compareTo方法。
+   	依据compareTo方法的返回值，确定元素在TreeSet数据结构中的位置。
+   	TreeSet方法保证元素唯一性的方式：就是参考比较方法的结果是否为0，如果return 0，视为两个对象重复，不存。
+
+47、注意：在进行比较时，如果判断元素不唯一，比如，同姓名，同年龄，才视为同一个人。
+   	在判断时，需要分主要条件和次要条件，当主要条件相同时，再判断次要条件，按照次要条件排序。
+
+48、TreeSet集合排序有两种方式，Comparable和Comparator区别：
+    1：让元素自身具备比较性，需要元素对象实现Comparable接口，覆盖compareTo方法。
+    2：让集合自身具备比较性，需要定义一个实现了Comparator接口的比较器，并覆盖compare方法，并将该类对象作为实际参数传递给TreeSet集合的构造函数。
+    第二种方式较为灵活。
+
+49、Map集合：
+    |--Hashtable：底层是哈希表数据结构，是线程同步的。不可以存储null键，null值。
+    |--HashMap：底层是哈希表数据结构，是线程不同步的。可以存储null键，null值。替代了Hashtable.
+    |--TreeMap：底层是二叉树结构，可以对map集合中的键进行指定顺序的排序。
+
+50、Map集合存储和Collection有着很大不同：
+    Collection一次存一个元素；Map一次存一对元素。
+    Collection是单列集合；Map是双列集合。
+    Map中的存储的一对元素：一个是键，一个是值，键与值之间有对应(映射)关系。
+    特点：要保证map集合中键的唯一性。
+
+51、把map集合转成set的方法：
+    Set keySet();
+   	Set entrySet();//取的是键和值的映射关系。
+
+52、使用集合的技巧：
+        看到Array就是数组结构，有角标，查询速度很快。
+        看到link就是链表结构：增删速度快，而且有特有方法。addFirst； addLast； removeFirst()； removeLast()； getFirst()；getLast()；
+        看到hash就是哈希表，就要想要哈希值，就要想到唯一性，就要想到存入到该结构的中的元素必须覆盖hashCode，equals方法。
+        看到tree就是二叉树，就要想到排序，就想要用到比较。
+    比较的两种方式：
+        一个是Comparable：覆盖compareTo方法；
+        一个是Comparator：覆盖compare方法。
+    LinkedHashSet，LinkedHashMap:这两个集合可以保证哈希表有存入顺序和取出顺序一致，保证哈希表有序。
+    集合什么时候用？
+        当存储的是一个元素时，就用Collection。当存储对象之间存在着映射关系时，就使用Map集合。
+        保证唯一，就用Set。不保证唯一，就用List。
+
+53、Collections：它的出现给集合操作提供了更多的功能。这个类不需要创建对象，内部提供的都是静态方法。
+    静态方法：
+    Collections.sort(list);//list集合进行元素的自然顺序排序。
+    Collections.sort(list,new ComparatorByLen());//按指定的比较器方法排序。
+   class ComparatorByLen implements Comparator<String>{
+   	public int compare(String s1,String s2){
+   		int temp = s1.length()-s2.length();
+   		return temp==0?s1.compareTo(s2):temp;
+   	}
+   }
+    Collections.max(list); //返回list中字典顺序最大的元素。
+    int index = Collections.binarySearch(list,"zz");//二分查找，返回角标。
+    Collections.reverseOrder();//逆向反转排序。
+    Collections.shuffle(list);//随机对list中的元素进行位置的置换。
+
+54、将非同步集合转成同步集合的方法：Collections中的  XXX synchronizedXXX(XXX);
+    List synchronizedList(list);
+    Map synchronizedMap(map);
+    原理：定义一个类，将集合所有的方法加同一把锁后返回。
+
+55、高级for循环和传统for循环的区别：
+    高级for循环在使用时，必须要明确被遍历的目标。
+        这个目标，可以是Collection集合或者数组，如果遍历Collection集合，在遍历过程中还需要对元素进行操作，比如删除，需要使用迭代器。
+    如果遍历数组，还需要对数组元素进行操作，建议用传统for循环因为可以定义角标通过角标操作元素。
+        如果只为遍历获取，可以简化成高级for循环，它的出现为了简化书写。
+    高级for循环可以遍历map集合吗？不可以。但是可以将map转成set后再使用foreach语句。
+
+56、可变参数（...）：用到函数的参数上，当要操作的同一个类型元素个数不确定的时候，可是用这个方式，这个参数可以接受任意个数的同一类型的数据。
+    和以前接收数组不一样的是：
+        以前定义数组类型，需要先创建一个数组对象，再将这个数组对象作为参数传递给函数。现在，直接将数组中的元素作为参数传递即可。
+        底层其实是将这些元素进行数组的封装，而这个封装动作，是在底层完成的，被隐藏了。所以简化了用户的书写，少了调用者定义数组的动作。
+        如果在参数列表中使用了可变参数，可变参数必须定义在参数列表结尾(也就是必须是最后一个参数，否则编译会失败。)。
+
+57、静态导入：导入了类中的所有静态成员，简化静态成员的书写。
+    import static java.util.Collections.*;  //导入了Collections类中的所有静态成员
+
+58、jdk5以前基本数据类型和包装类之间需要互转：
+    基本---引用   Integer x = new Integer(x);
+    引用---基本   int num = x.intValue();
+    1)、Integer x = 1; x = x + 1;  经历了什么过程？装箱  拆箱  装箱；
+    2)、为了优化，虚拟机为包装类提供了缓冲池，Integer池的大小 -128~127 一个字节的大小；
+    3)、String池：Java为了优化字符串操作 提供了一个缓冲池；
+
+59、泛型：jdk1.5版本以后出现的一个安全机制。表现格式：< >
+    好处：
+    1：将运行时期的问题ClassCastException问题转换成了编译失败，体现在编译时期，程序员就可以解决问题。
+    2：避免了强制转换的麻烦。
+
+60、泛型技术：其实应用在编译时期，是给编译器使用的技术，到了运行时期，泛型就不存在了。为什么?
+    因为泛型的擦除：
+        也就是说，编辑器检查了泛型的类型正确后，在生成的类文件中是没有泛型的。
+    在运行时，如何知道获取的元素类型而不用强转呢？
+    泛型的补偿：
+        因为存储的时候，类型已经确定了是同一个类型的元素，所以在运行时，只要获取到该元素的类型，在内部进行一次转换即可，
+        所以使用者不用再做转换动作了。
+
+61、什么时候用泛型类呢？
+    当类中的操作的引用数据类型不确定的时候，以前用的Object来进行扩展的，现在可以用泛型来表示。
+    这样可以避免强转的麻烦，而且将运行问题转移到的编译时期。
+
+62、泛型在程序定义上的体现：
+    //泛型类：将泛型定义在类上。
+   class Tool<Q> {
+   	private Q obj;
+   	public  void setObject(Q obj) {
+   		this.obj = obj;
+   	}
+   	public Q getObject() {
+   		return obj;
+   	}
+   }
+    //当方法操作的引用数据类型不确定的时候，可以将泛型定义在方法上。
+   	public <W> void method(W w) {
+   		System.out.println("method:"+w);
+   	}
+    //静态方法上的泛型：静态方法无法访问类上定义的泛型。如果静态方法操作的引用数据类型不确定的时候，必须要将泛型定义在方法上。
+   	public static <Q> void function(Q t) {
+   		System.out.println("function:"+t);
+   	}
+    //泛型接口.
+   interface Inter<T> {
+   	void show(T t);
+   }
+   class InterImpl<R> implements Inter<R> {
+   	public void show(R r) {
+   		System.out.println("show:"+r);
+   	}
+   }
+
+63、泛型中的通配符：可以解决当具体类型不确定的时候，这个通配符就是 ?  ；当操作类型时，不需要使用类型的具体功能时，只使用Object类中的功能。
+        那么可以用 ? 通配符来表未知类型。
+    泛型限定：
+   	    上限：？extends E：可以接收E类型或者E的子类型对象。
+   	    下限：？super E：可以接收E类型或者E的父类型对象。
+    上限什么时候用：
+        往集合中添加元素时，既可以添加E类型对象，又可以添加E的子类型对象。为什么？因为取的时候，E类型既可以接收E类对象，又可以接收E的子类型对象。
+    下限什么时候用：
+        当从集合中获取元素进行操作的时候，可以用当前元素的类型接收，也可以用当前元素的父类型接收。
+
+64、Properties getProperties() ;  // 获取当前系统的属性信息
+    Properties prop = System.getProperties(); //获取系统的属性信息，并将这些信息存储到Properties集合中。
+    System.setProperty("myname","毕老师"); //给系统属性信息集添加具体的属性信息
+    //临时设置方式：运行jvm时，可以通过jvm的参数进行系统属性的临时设置，可以在java命令的后面加入 –D<name>=<value>
+        用法：java –Dmyname=小明 类名。
+    String name = System.getProperty("os.name");//获取指定属性的信息
+
+65、API--- java.util.Math: 用于数学运算的工具类，属性和行为都是静态的。该类是final不允许继承。
+    static double ceil(double a) ; //返回大于指定数值的最小整数
+    static double floor(double a) ; //返回小于指定数值的最大整数
+    static long round(double a) ; //四舍五入成整数
+    static double pow(double a, double b) ; //a的b次幂
+    static double random(); //返回0~1的伪随机数
+
 
 
 
