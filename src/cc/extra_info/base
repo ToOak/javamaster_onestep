@@ -530,3 +530,131 @@
     5：其实该对象内部封装了字节读取流和字节写入流。
     注意：实现随机访问，最好是数据有规律。
 
+79、管道流：管道读取流和管道写入流可以像管道一样对接上，管道读取流就可以读取管道写入流写入的数据。
+    注意：需要加入多线程技术，因为单线程，先执行read，会发生死锁，因为read方法是阻塞式的，没有数据的read方法会让线程等待。
+    PipedInputStream pipin = new PipedInputStream();
+    	PipedOutputStream pipout = new PipedOutputStream();
+    	pipin.connect(pipout);
+
+80、对象的序列化：目的：将一个具体的对象进行持久化，写入到硬盘上。
+        注意：静态数据不能被序列化，因为静态数据不在堆内存中，是存储在静态方法区中。
+        如何将非静态的数据不进行序列化？用transient 关键字修饰此变量即可。
+        Serializable：用于启动对象的序列化功能，可以强制让指定类具备序列化功能，该接口中没有成员，这是一个标记接口。
+            这个标记接口用于给序列化类提供UID。这个uid是依据类中的成员的数字签名进行运行获取的。
+            如果不需要自动获取一个uid，可以在类中，手动指定一个名称为serialVersionUID id号。
+            依据编译器的不同，或者对信息的高度敏感性。最好每一个序列化的类都进行手动显示的UID的指定。
+
+81、DataOutputStream、DataInputStream：专门用于操作基本数据类型数据的对象。
+    DataOutputStream dos =  new DataOutputStream(new FileOutputStream("data.txt"));
+    dos.writeInt(256);
+    dos.close();
+   	DataInputStream dis = new DataInputStream(new FileInputStream("data.txt"));
+   	int num = dis.readInt();
+   	System.out.println(num);
+   	dis.close();
+
+82、ByteArrayInputStream：源：内存
+    ByteArrayOutputStream：目的：内存。
+    这两个流对象不涉及底层资源调用，操作的都是内存中数组，所以不需要关闭。
+    直接操作字节数组就可以了，为什么还要把数组封装到流对象中呢？
+        因为数组本身没有方法，只有一个length属性。为了便于数组的操作，将数组进行封装，对外提供方法操作数组中的元素。
+    对于数组元素操作无非两种操作：设置（写）和获取（读），而这两操作正好对应流的读写操作。这两个对象就是使用了流的读写思想来操作数组。
+    //创建源：
+    	ByteArrayInputStream bis = new ByteArrayInputStream("abcdef".getBytes());
+    	//创建目的：
+    	ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    	int ch = 0;
+    	while((ch=bis.read())!=-1){
+    		bos.write(ch);
+    	}
+    	System.out.println(bos.toString());
+
+83、 //Discription:[深度复制方法,需要对象及对象所有的对象属性都实现序列化]　
+    public CartData mCopy() {
+        CartData cartData = null;
+        try {
+            // 将该对象序列化成流,因为写在流里的是对象的一个拷贝，
+            // 而原对象仍然存在于JVM里面。所以利用这个特性可以实现对象的深拷贝
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(this);
+            // 将流序列化成对象
+            ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            cartData = (CartData) ois.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return cartData;
+    }
+
+84、端口：
+    物理端口：
+    逻辑端口：用于标识进程的逻辑地址，不同进程的标识；有效端口：0~65535，其中0~1024系统使用或保留端口。
+    java 中ip对象：InetAddress.
+    import java.net.*;
+    class  IPDemo{
+    	public static void main(String[] args) throws UnknownHostException{
+    		//通过名称(ip字符串or主机名)来获取一个ip对象。
+    		InetAddress ip = InetAddress.getByName("www.baidu.com");//java.net.UnknownHostException
+    		System.out.println("addr:"+ip.getHostAddress());
+    		System.out.println("name:"+ip.getHostName());
+    	}
+    }
+
+85、Socket：★★★★，套接字，通信的端点。
+    就是为网络服务提供的一种机制，通信的两端都有Socket，网络通信其实就是Socket间的通信，数据在两个Socket间通过IO传输。
+
+86、UDP传输：
+    1，只要是网络传输，必须有socket 。
+    2，数据一定要封装到数据包中，数据包中包括目的地址、端口、数据等信息。
+    直接操作udp不可能，对于java语言应该将udp封装成对象，易于我们的使用，这个对象就是DatagramSocket. 封装了udp传输协议的socket对象。
+    因为数据包中包含的信息较多，为了操作这些信息方便，也一样会将其封装成对象。
+        这个数据包对象就是：DatagramPacket.通过这个对象中的方法，就可以获取到数据包中的各种信息。
+    DatagramSocket具备发送和接受功能，在进行udp传输时，需要明确一个是发送端，一个是接收端。
+
+87、udp的发送端：
+    1，建立udp的socket服务，创建对象时如果没有明确端口，系统会自动分配一个未被使用的端口。
+    2，明确要发送的具体数据。
+    3，将数据封装成了数据包。
+    4，用socket服务的send方法将数据包发送出去。
+    5，关闭资源。
+
+88、udp的接收端：
+    1，创建udp的socket服务，必须要明确一个端口，作用在于，只有发送到这个端口的数据才是这个接收端可以处理的数据。
+    2，定义数据包，用于存储接收到数据。
+    3，通过socket服务的接收方法将收到的数据存储到数据包中。
+    4，通过数据包的方法获取数据包中的具体数据内容，比如ip、端口、数据等等。
+    5，关闭资源。
+
+89、TCP传输：两个端点的建立连接后会有一个传输数据的通道，这通道称为流，
+    而且是建立在网络基础上的流，称之为socket流。该流中既有读取，也有写入。
+    tcp的两个端点：一个是客户端，一个是服务端。
+        客户端：对应的对象，Socket
+        服务端：对应的对象，ServerSocket
+
+90、TCP客户端：
+    1，建立tcp的socket服务，最好明确具体的地址和端口。这个对象在创建时，就已经可以对指定ip和端口进行连接(三次握手)。
+    2，如果连接成功，就意味着通道建立了，socket流就已经产生了。只要获取到socket流中的读取流和写入流即可，
+        只要通过getInputStream和getOutputStream就可以获取两个流对象。
+    3，关闭资源。
+
+91、TCP服务端：
+    1，创建服务端socket服务，并监听一个端口。
+    2，服务端为了给客户端提供服务，获取客户端的内容，可以通过accept方法获取连接过来的客户端对象。
+    3，可以通过获取到的socket对象中的socket流和具体的客户端进行通讯。
+    4，如果通讯结束，关闭资源。注意：要先关客户端，再关服务端。
+
+92、反射技术：其实就是动态加载一个指定的类，并获取该类中的所有的内容。
+        而且将字节码文件封装成对象，并将字节码文件中的内容都封装成对象，这样便于操作这些成员。
+        简单说：反射技术可以对一个类进行解剖。
+    反射的好处：大大的增强了程序的扩展性。
+
+93、反射的基本步骤：
+    1、获得Class对象，就是获取到指定的名称的字节码文件对象。
+    2、实例化对象，获得类的属性、方法或构造函数。
+    3、访问属性、调用方法、调用构造函数创建对象。
+
+

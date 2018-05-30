@@ -1,5 +1,6 @@
 package cc.extra_info;
 
+import java.io.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,7 +10,7 @@ import java.util.Date;
 import static java.lang.System.out;
 
 public class DateTest {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         {
             String str_time = "2011/10/25";
             DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
@@ -35,6 +36,15 @@ public class DateTest {
             out.println(calendar.get(Calendar.YEAR) + "年" + (calendar.get(Calendar.MONTH) + 1) + "月"
                     + getNum(calendar.get(Calendar.DAY_OF_MONTH)) + "日"
                     + "星期" + getWeek(calendar.get(Calendar.DAY_OF_WEEK)));
+        }
+        {
+            DataOutputStream dos =  new DataOutputStream(new FileOutputStream("data.txt"));
+            dos.writeInt(256);
+            dos.close();
+            DataInputStream dis = new DataInputStream(new FileInputStream("data.txt"));
+            int num = dis.readInt();
+            System.out.println(num);
+            dis.close();
         }
 
     }

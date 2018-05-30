@@ -4,3 +4,5 @@ out/
 /bin/
 .classpath
 .project
+data.txt
+obj.txt
