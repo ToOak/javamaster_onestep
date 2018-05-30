@@ -1,5 +1,6 @@
-package cc;
+package cc.extra_info;
 
+import java.io.File;
 import java.io.IOException;
 
 import static java.lang.System.out;
@@ -38,7 +39,7 @@ class Test {
             Runtime r = Runtime.getRuntime();
             Process p = null;    //运行指定的程序
             try {
-                p = r.exec("notepad.exe .\\src\\cc\\Test.java");
+                p = r.exec("notepad.exe .\\src\\cc\\extra_info" + File.separator + "Test.java");
                 Thread.sleep(3000);
             } catch (InterruptedException | IOException e) {
                 e.printStackTrace();
