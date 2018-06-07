@@ -3,6 +3,7 @@ package cc.extra_info;
 import sun.misc.BASE64Encoder;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -28,6 +29,7 @@ public class MD5AndSHA {
         out.println(Integer.toHexString(new StringBuilder("Hello World!").hashCode()));
         out.println(Integer.toHexString(new StringBuilder("Hello World!").toString().hashCode()));
         out.println(encoderByMd5("Hello World!"));
+        out.println(md5("Hello World!"));
     }
 
     /**
@@ -78,4 +80,33 @@ public class MD5AndSHA {
         else
             return false;
     }
+
+    public static String md5(String plainText) {
+        byte[] secretBytes = null;
+        try {
+            secretBytes = MessageDigest.getInstance("md5").digest(
+                    plainText.getBytes("utf-8"));
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            throw new RuntimeException("no md5！");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            throw new RuntimeException("utf-8 error！");
+        }
+
+        /**
+         * 16 Band
+         */
+        String md5code = new BigInteger(1, secretBytes).toString(16);
+        out.println("md5code: " + md5code);
+
+        /**
+         * If number.lenth < 32, add 0 in its front
+         */
+        for (int i = 0; i < 32 - md5code.length(); i++) {
+            md5code = "0" + md5code;
+        }
+        return md5code;
+    }
+
 }
